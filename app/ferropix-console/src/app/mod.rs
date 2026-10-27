@@ -500,12 +500,10 @@ fn Root() -> impl IntoView {
         false,
     );
     let shown = Memo::new(move |_| {
-        let read = read.get().and_then(Result::ok);
         let here = location.pathname.get();
-        let posted = posted
+        posted
             .and_then(|Posted(posted)| posted.get())
-            .filter(|page| page.path.split('?').next() == Some(here.as_str()));
-        posted.or(read)
+            .filter(|page| page.path.split('?').next() == Some(here.as_str()))
     });
     Effect::new(move |_| {
         if let (Some(page), Some(Latest(latest))) = (shown.get(), latest) {
